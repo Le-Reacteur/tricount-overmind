@@ -1,10 +1,9 @@
 import React from 'react';
 import Card from './Card';
 import Button from './Button';
-import { Select } from './Select';
+import Select from './Select';
 import ButtonContainer from './ButtonContainer';
-import { Input } from './Input';
-import { extractDataFromSubmitEvent, clearFormFromSubmitEvent, Validator } from '../utils';
+import Input from './Input';
 import { connect } from '../logic';
 
 const NewExpenseFormRender = ({ app }) => {
@@ -12,36 +11,14 @@ const NewExpenseFormRender = ({ app }) => {
     return null;
   }
 
-  const addExpense = app.actions.addExpense;
-
   return (
     <form
-      onSubmit={e => {
-        e.preventDefault();
-        const data = extractDataFromSubmitEvent(e);
-        // Validate data
-        const validated = Validator.validate(
-          Validator.schema({
-            userId: Validator.notEqualWrapper(
-              Validator.notEmptyStr('Missing UserId'),
-              'none',
-              'Please select a User !'
-            ),
-            description: Validator.notEmptyStr('You must provide a description'),
-            amount: Validator.numberFromString('Amount must be a valid number'),
-          }),
-          data
-        );
-        if (validated.error) {
-          alert(validated.error);
-          return;
+      onSubmit={event => {
+        event.persist();
+        const shouldClear = app.actions.submitAddExpense(event);
+        if (shouldClear) {
+          app.actions.clearForm(event.target);
         }
-        addExpense({
-          userId: validated.value.userId,
-          amount: validated.value.amount,
-          description: validated.value.description,
-        });
-        clearFormFromSubmitEvent(e);
       }}
     >
       <Card title="New Expense">
@@ -62,10 +39,5 @@ const NewExpenseFormRender = ({ app }) => {
     </form>
   );
 };
-
-// NewExpenseFormRender.propTypes = {
-//   users: CustomPropTypes.users.isRequired,
-//   addExpense: PropTypes.func.isRequired,
-// };
 
 export const NewExpenseForm = connect(NewExpenseFormRender);

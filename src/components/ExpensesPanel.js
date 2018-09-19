@@ -30,10 +30,4 @@ const ExpensesPanelRender = ({ app }) => {
   );
 };
 
-// ExpensesPanelRender.propTypes = {
-//   expensesWithUsers: CustomPropTypes.expensesWithUser.isRequired,
-//   users: CustomPropTypes.users.isRequired,
-//   removeExpense: PropTypes.func.isRequired,
-// };
-
 export default connect(ExpensesPanelRender);

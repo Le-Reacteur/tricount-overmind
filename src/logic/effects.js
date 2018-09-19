@@ -1,38 +1,10 @@
-export function extractDataFromSubmitEvent(event) {
-  return new Array(100)
-    .fill(null)
-    .map((v, index) => {
-      return event.target[index] || null;
-    })
-    .filter(v => v !== null && v.name !== '')
-    .reduce((acc, elem) => {
-      acc[elem.name] = elem.value;
-      return acc;
-    }, {});
-}
-
-export function clearFormFromSubmitEvent(event) {
-  const elems = new Array(100)
-    .fill(null)
-    .map((v, index) => {
-      return event.target[index] || null;
-    })
-    .filter(v => v !== null && v.name !== '');
-
-  elems.forEach(elem => {
-    if (elem.nodeName.toLowerCase() === 'input' && elem.type === 'text') {
-      elem.value = '';
-    }
-  });
-
-  if (elems[0]) {
-    elems[0].focus();
-  }
-}
-
 export const getRandomColor = () => {
   return `hsl(${Math.floor(Math.random() * 360)}, 70%, 47%)`;
 };
+
+export const randomUserId = users => users[Math.floor(users.length * Math.random())].id;
+
+export const randomAmount = () => Math.floor(Math.random() * 10000) / 100;
 
 /** Used to generate unique IDs. */
 let idCounter = {};
@@ -52,6 +24,42 @@ export function uniqueId(prefix = '$lodash$') {
   }
 
   return `${prefix + id}`;
+}
+
+export function extractDataFromSubmitEvent(target) {
+  return new Array(target.length)
+    .fill(null)
+    .map((v, index) => {
+      return target[index] || null;
+    })
+    .filter(v => v !== null && v.name !== '')
+    .reduce((acc, elem) => {
+      acc[elem.name] = elem.value;
+      return acc;
+    }, {});
+}
+
+export function clearFormFromSubmitEvent(target) {
+  const elems = new Array(target.length)
+    .fill(null)
+    .map((v, index) => {
+      return target[index] || null;
+    })
+    .filter(v => v !== null && v.name !== '');
+
+  elems.forEach(elem => {
+    if (elem.nodeName.toLowerCase() === 'input' && elem.type === 'text') {
+      elem.value = '';
+    }
+  });
+
+  if (elems[0]) {
+    elems[0].focus();
+  }
+}
+
+export function alertErrors(errors) {
+  alert(errors);
 }
 
 export const Validator = (() => {

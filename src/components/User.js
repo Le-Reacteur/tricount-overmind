@@ -31,11 +31,4 @@ const User = ({ app, user }) => {
   );
 };
 
-// User.propTypes = {
-//   name: PropTypes.string.isRequired,
-//   sum: PropTypes.number,
-//   color: PropTypes.string.isRequired,
-//   onRemove: PropTypes.func,
-// };
-
 export default connect(User);

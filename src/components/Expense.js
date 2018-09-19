@@ -40,12 +40,4 @@ const Expense = ({ expense, app }) => {
   );
 };
 
-// Expense.propTypes = {
-//   amount: PropTypes.number.isRequired,
-//   description: PropTypes.string.isRequired,
-//   userName: PropTypes.string,
-//   userColor: PropTypes.string,
-//   onRemove: PropTypes.func,
-// };
-
 export default connect(Expense);

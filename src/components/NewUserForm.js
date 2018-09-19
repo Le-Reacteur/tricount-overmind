@@ -3,29 +3,18 @@ import PropTypes from 'prop-types';
 import Card from './Card';
 import Button from './Button';
 import ButtonContainer from './ButtonContainer';
-import { Input } from './Input';
-import { extractDataFromSubmitEvent, clearFormFromSubmitEvent, Validator } from '../utils';
+import Input from './Input';
 import { connect } from '../logic';
 
 const NewUserFormRender = ({ app }) => {
   return (
     <form
-      onSubmit={e => {
-        e.preventDefault();
-        const data = extractDataFromSubmitEvent(e);
-        // Validate data
-        const validated = Validator.validate(
-          Validator.schema({
-            username: Validator.notEmptyStr('No name ?'),
-          }),
-          data
-        );
-        if (validated.error) {
-          alert(validated.error);
-          return;
+      onSubmit={event => {
+        event.persist();
+        const shouldClear = app.actions.submitAddUser(event);
+        if (shouldClear) {
+          app.actions.clearForm(event.target);
         }
-        app.actions.addUser(validated.value.username);
-        clearFormFromSubmitEvent(e);
       }}
     >
       <Card title="New User">

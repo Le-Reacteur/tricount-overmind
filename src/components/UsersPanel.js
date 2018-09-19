@@ -27,9 +27,4 @@ const UsersPanelRender = ({ app }) => {
   );
 };
 
-// UsersPanelRender.propTypes = {
-//   usersWithSum: CustomPropTypes.usersWithSum.isRequired,
-//   removeUser: PropTypes.func.isRequired,
-// };
-
 export const UsersPanel = connect(UsersPanelRender);

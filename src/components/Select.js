@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from '../logic';
 
 /**
  * A select input, the options props should be a list of object:
  * { key: 'the-key', text: 'The description' }
  */
 
-export const Select = ({ options, name, label }) => (
+const Select = ({ options, name, label }) => (
   <div className="select">
     {label && (
       <label htmlFor={name} className="select--label">
@@ -25,3 +26,5 @@ Select.propTypes = {
   label: PropTypes.string,
   name: PropTypes.string.isRequired,
 };
+
+export default connect(Select);
