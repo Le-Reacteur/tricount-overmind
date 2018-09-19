@@ -15,7 +15,10 @@ export const addUser = (state, user) => {
   state.users.push(user);
 };
 
-export const removeUser = (state, user) => {
-  const userIndex = state.users.indexOf(user);
-  state.users.splice(userIndex, 1);
+export const removeUser = (state, userWithSum) => {
+  const foundUser = state.users.find(user => user.id === userWithSum.id);
+  const userIndex = state.users.indexOf(foundUser);
+  if (userIndex >= 0) {
+    state.users.splice(userIndex, 1);
+  }
 };
