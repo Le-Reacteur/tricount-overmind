@@ -7,28 +7,38 @@ export const submitAddExpense = action =>
   action()
     .do(operations.doPreventDefault)
     .map((effects, event) => {
-      return effects.extractDataFromSubmitEvent(event.target);
+      return {
+        data: effects.extractDataFromSubmitEvent(event.target),
+        event,
+      };
     })
-    .map(({ Validator }, data) => {
-      return Validator.validate(
-        Validator.schema({
-          userId: Validator.notEqualWrapper(Validator.notEmptyStr('Missing UserId'), 'none', 'Please select a User !'),
-          description: Validator.notEmptyStr('You must provide a description'),
-          amount: Validator.numberFromString('Amount must be a valid number'),
-        }),
-        data
-      );
+    .map(({ Validator }, { data, event }) => {
+      return {
+        event,
+        data: Validator.validate(
+          Validator.schema({
+            userId: Validator.notEqualWrapper(
+              Validator.notEmptyStr('Missing UserId'),
+              'none',
+              'Please select a User !'
+            ),
+            description: Validator.notEmptyStr('You must provide a description'),
+            amount: Validator.numberFromString('Amount must be a valid number'),
+          }),
+          data
+        ),
+      };
     })
     .when(operations.validatedIsValid, {
       true: a =>
         a()
-          .map((_, v) => v.value)
+          .map((_, { data }) => data.value)
           .compose(addExpense)
           .map(() => true),
       false: a =>
         a()
-          .do((effects, value) => {
-            effects.alertErrors(value.error);
+          .do((effects, { data }) => {
+            effects.alertErrors(data.error);
           })
           .map(() => false),
     });
