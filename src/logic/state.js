@@ -1,9 +1,7 @@
-import { derive } from 'overmind';
-
 const state = {
   expenses: [],
   users: [],
-  expensesWithUsers: derive(state => {
+  expensesWithUsers: state => {
     const users = state.users;
     return state.expenses.map(expense => {
       const user = users.find(user => {
@@ -14,8 +12,8 @@ const state = {
         user,
       };
     });
-  }),
-  usersWithSum: derive(state => {
+  },
+  usersWithSum: state => {
     const users = state.users;
     const expenses = state.expenses;
     const usersWithSum = users.map(user => {
@@ -28,7 +26,7 @@ const state = {
       };
     });
     return usersWithSum;
-  }),
+  },
 };
 
 export default state;

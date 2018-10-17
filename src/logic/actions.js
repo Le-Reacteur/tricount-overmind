@@ -1,11 +1,11 @@
 import * as mutations from './mutations';
 import * as operations from './operations';
 
-export const addExpense = action => action().mutate(mutations.addExpense);
+export const addExpense = ({ mutate }) => mutate(mutations.addExpense);
 
 export const submitAddExpense = action =>
-  action()
-    .do(operations.doPreventDefault)
+  action
+    .run(operations.doPreventDefault)
     .map((effects, event) => {
       return {
         data: effects.extractDataFromSubmitEvent(event.target),
@@ -31,32 +31,29 @@ export const submitAddExpense = action =>
     })
     .when(operations.validatedIsValid, {
       true: a =>
-        a()
+        a
           .map((_, { data }) => data.value)
           .compose(addExpense)
           .map(() => true),
       false: a =>
-        a()
-          .do((effects, { data }) => {
+        a
+          .run((effects, { data }) => {
             effects.alertErrors(data.error);
           })
           .map(() => false),
     });
 
 export const clearForm = a =>
-  a().do((effects, event) => {
+  a.run((effects, event) => {
     effects.clearFormFromSubmitEvent(event);
   });
 
-export const removeExpense = action => action().mutate(mutations.removeExpense);
+export const removeExpense = ({ mutate }) => mutate(mutations.removeExpense);
 
-export const removeUser = action =>
-  action()
-    .mutate(mutations.removeExpensesOfUser)
-    .mutate(mutations.removeUser);
+export const removeUser = action => action.mutate(mutations.removeExpensesOfUser).mutate(mutations.removeUser);
 
 export const addUser = action =>
-  action()
+  action
     .map((effects, name) => {
       const color = effects.getRandomColor();
       const userId = effects.uniqueId('user');
@@ -70,8 +67,8 @@ export const addUser = action =>
     .mutate(mutations.addUser);
 
 export const submitAddUser = action =>
-  action()
-    .do(operations.doPreventDefault)
+  action
+    .run(operations.doPreventDefault)
     .map((effects, event) => {
       return effects.extractDataFromSubmitEvent(event.target);
     })
@@ -85,20 +82,20 @@ export const submitAddUser = action =>
     })
     .when(operations.validatedIsValid, {
       true: a =>
-        a()
+        a
           .map((_, v) => v.value.username)
           .compose(addUser)
           .map(() => true),
       false: a =>
-        a()
-          .do((effects, value) => {
+        a
+          .run((effects, value) => {
             effects.alertErrors(value.error);
           })
           .map(() => false),
     });
 
 export const createInitialState = action =>
-  action()
+  action
     .map(effects => {
       const initialUsers = [
         {
