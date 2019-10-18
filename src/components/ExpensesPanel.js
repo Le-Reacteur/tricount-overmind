@@ -12,19 +12,22 @@ const ExpensesPanelRender = ({ app }) => {
   const noExpenses = app.state.expensesWithUsers.length === 0;
   return (
     <Panel>
-      <Card title="Expenses">
-        {noUsers ? (
-          <CenteredText>Create your first user to add expenses</CenteredText>
-        ) : noExpenses ? (
-          <CenteredText>You don't have any expenses, use the form below to add one</CenteredText>
-        ) : (
-          <List>
-            {app.state.expensesWithUsers.map((expense, index) => (
-              <Expense key={index} expense={expense} />
-            ))}
-          </List>
-        )}
-      </Card>
+      <Card
+        title="Expenses"
+        content={
+          noUsers ? (
+            <CenteredText>Create your first user to add expenses</CenteredText>
+          ) : noExpenses ? (
+            <CenteredText>You don't have any expenses, use the form below to add one</CenteredText>
+          ) : (
+            <List>
+              {app.state.expensesWithUsers.map((expense, index) => (
+                <Expense key={index} expense={expense} />
+              ))}
+            </List>
+          )
+        }
+      />
       <NewExpenseForm />
     </Panel>
   );
